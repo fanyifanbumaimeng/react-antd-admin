@@ -22,6 +22,9 @@ import Other from '../views/control/Other';
 import MenuOne from '../views/levelMenu/MenuOne';
 import MenuTwo from '../views/levelMenu/MenuTwo';
 import About from '../views/about/About';
+import UserManage from '../views/user-manage/TableSearch'
+import MonitorEquipment from '../views/monitor-equipment/TableSearch'
+import SystemData from '../views/system-data/TableSearch'
 
 export const routes = [
 	{ path: '/dashboard', component: Dashboard },
@@ -34,6 +37,12 @@ export const routes = [
 	{ path: '/table/basic', component: TableBasic },
 	{ path: '/table/edit', component: TableEdit },
 	{ path: '/table/search', component: TableSearch },
+	{ path: '/user-manage/search', component: UserManage },
+
+	{ path: '/monitor-equipment/search', component: MonitorEquipment },
+
+	{ path: '/system-data/search', component: SystemData },
+
 	{ path: '/chart/line', component: LineChart },
 	{ path: '/chart/keyboard', component: Keyboard },
 	{ path: '/chart/bar', component: BarChart },
