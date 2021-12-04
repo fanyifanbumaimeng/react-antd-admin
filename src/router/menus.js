@@ -17,25 +17,25 @@ export const menus = [
 	// 	title: '图标',
 	// 	icon: 'file'
 	// },
-	// {
-	// 	path: '/form',
-	// 	title: '表单',
-	// 	icon: 'form',
-	// 	children: [
-	// 		{
-	// 			path: '/form/basic',
-	// 			title: '基本表单'
-	// 		},
-	// 		{
-	// 			path: '/form/editor',
-	// 			title: '富文本'
-	// 		},
-	// 		{
-	// 			path: '/form/markdown',
-	// 			title: 'MarkDown'
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/form',
+		title: '表单',
+		icon: 'form',
+		children: [
+			{
+				path: '/form/basic',
+				title: '基本表单'
+			},
+			{
+				path: '/form/editor',
+				title: '富文本'
+			},
+			{
+				path: '/form/markdown',
+				title: 'MarkDown'
+			}
+		]
+	},
 	// {
 	// 	path: '/menu',
 	// 	title: '多级菜单',

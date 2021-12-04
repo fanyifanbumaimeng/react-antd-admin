@@ -110,7 +110,7 @@ class BasicForm extends React.Component {
 					</h1>
 				</div>
 				<Form {...formItemLayout} onSubmit={this.handleSubmit}>
-					<Form.Item label="邮箱">
+					{/* <Form.Item label="邮箱">
 						{getFieldDecorator('emial', {
 							rules: [
 								{
@@ -123,7 +123,7 @@ class BasicForm extends React.Component {
 								}
 							]
 						})(<Input />)}
-					</Form.Item>
+					</Form.Item> */}
 					<Form.Item label="密码" hasFeedback>
 						{getFieldDecorator('password', {
 							rules: [
@@ -137,7 +137,7 @@ class BasicForm extends React.Component {
 							]
 						})(<Input.Password />)}
 					</Form.Item>
-					<Form.Item label="确认密码" hasFeedback>
+					{/* <Form.Item label="确认密码" hasFeedback>
 						{getFieldDecorator('confirm', {
 							rules: [
 								{
@@ -149,7 +149,7 @@ class BasicForm extends React.Component {
 								}
 							]
 						})(<Input.Password onBlur={this.handleConfirmBlur} />)}
-					</Form.Item>
+					</Form.Item> */}
 					<Form.Item
 						label={
 							<span>
@@ -164,7 +164,7 @@ class BasicForm extends React.Component {
 							rules: [{ required: true, message: '请输入昵称！', whitespace: true }]
 						})(<Input />)}
 					</Form.Item>
-					<Form.Item label="常居地">
+					{/* <Form.Item label="常居地">
 						{getFieldDecorator('residence', {
 							initialValue: ['zhejiang', 'hangzhou', 'xihu'],
 							rules: [{ type: 'array', required: true, message: '请选择常居地！' }]
@@ -186,8 +186,8 @@ class BasicForm extends React.Component {
 								<Button>获取验证码</Button>
 							</Col>
 						</Row>
-					</Form.Item>
-					<Form.Item {...tailFormItemLayout}>
+					</Form.Item> */}
+					{/* <Form.Item {...tailFormItemLayout}>
 						{getFieldDecorator('agreement', {
 							valuePropName: 'checked'
 						})(
@@ -200,7 +200,7 @@ class BasicForm extends React.Component {
 						<Button type="primary" htmlType="submit">
 							注册
 						</Button>
-					</Form.Item>
+					</Form.Item> */}
 				</Form>
 			</div>
 		);

@@ -7,12 +7,13 @@ import { Layout } from 'antd';
 const { Content } = Layout;
 
 const MainContent = ({ location }) => {
-	const roleType = localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo')).role.type;
+	// const roleType = localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo') || {})?.role?.type;
 
 	const handleFilter = permission => {
 		// 过滤没有权限的页面
-		if (!permission || permission === roleType) return true;
-		return false;
+		// if (!permission || permission === roleType) return true;
+		// return false;
+		return true
 	};
 	 
 	return (

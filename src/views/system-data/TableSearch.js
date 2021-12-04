@@ -17,22 +17,44 @@ class TableSearch extends Component {
 		selectedRowKeys: [],
 		columns: [
 			{
-				title: 'Name',
+				title: '序号',
+				dataIndex: 'no',
+			},
+			{
+				title: '设备名称',
 				dataIndex: 'name',
-				sorter: true,
-				render: name => `${name.first} ${name.last}`,
-				width: '20%'
 			},
 			{
-				title: 'Gender',
-				dataIndex: 'gender',
-				filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
-				width: '20%'
+				title: '设备类型',
+				dataIndex: 'type',
+				render: (record) => {
+					return record === 1 ? '模拟型': '开关型'
+				}
 			},
 			{
-				title: 'Email',
-				dataIndex: 'email'
-			}
+				title: 'kks',
+				dataIndex: 'kks'
+			},
+			{
+				title: '点1路径',
+				dataIndex: 'point1Path'
+			},
+			{
+				title: '点2路径',
+				dataIndex: 'point2Path'
+			},
+			{
+				title: '算法点',
+				dataIndex: 'algorithmPoint'
+			},
+			{
+				title: '打包点',
+				dataIndex: 'packagePoint'
+			},
+			{
+				title: '备注',
+				dataIndex: 'remark'
+			},
 		]
 	};
 
@@ -56,13 +78,12 @@ class TableSearch extends Component {
 	};
 	fetch = (params = {}) => {
 		this.setState({ loading: true });
-		debugger
-		$axios.get('https://randomuser.me/api', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
+		$axios.get('/api/devices', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
-			pagination.total = 200;
+			pagination.total = data.data.total;
 			this.setState({
 				loading: false,
-				data: data.data.results,
+				data: data.data.list,
 				pagination
 			});
 		});
@@ -103,6 +124,8 @@ class TableSearch extends Component {
 			this.fetch({ results: this.state.pagination.pageSize, page: this.state.pagination.current });
 		});
 	}
+	
+	
 
 	render() {
 		const { selectedRowKeys } = this.state;
@@ -186,7 +209,7 @@ class TableSearch extends Component {
 						</Col>
 					</Row>
 				</Form>
-				<Table bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.location.postcode} rowSelection={rowSelection} />
+				<Table scroll={{ x: 1000 }} bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id} rowSelection={rowSelection} />
 			</div>
 		);
 	}

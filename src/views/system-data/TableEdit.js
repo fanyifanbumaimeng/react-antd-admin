@@ -142,7 +142,7 @@ class TableEdit extends Component {
 						content: (
 							<div>
 								<p>当前表单内容为：</p>
-								<p>{JSON.stringify(values)}</p>
+								{/* <p>{JSON.stringify(values)}</p> */}
 							</div>
 						),
 						onOk() {

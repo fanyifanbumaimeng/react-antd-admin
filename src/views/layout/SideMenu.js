@@ -13,12 +13,13 @@ class SideNenu extends Component {
 	state = { menuSelected: this.props.history.location.pathname };
 
 	handleFilter = permission => {
-		const roleType = localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo')).role.type;
-		// 过滤没有权限的页面
-		if (!permission || permission === roleType) {
-			return true;
-		}
-		return false;
+		console.log(localStorage.getItem('userInfo'), '====>>>>')
+		// const roleType = localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo')).role.type;
+		// // 过滤没有权限的页面
+		// if (!permission || permission === roleType) {
+		// 	return true;
+		// }
+		return true;
 	};
 
 	// 点击之后加入页签

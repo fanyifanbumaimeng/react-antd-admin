@@ -32,7 +32,7 @@ class EditForm extends Component {
 						]
 					})(<Input />)}
 				</Form.Item>
-				{/* <Form.Item label="密码" {...formItemLayout}>
+				<Form.Item label="密码" {...formItemLayout}>
 					{getFieldDecorator('password', {
 						initialValue: data.password,
 						rules: [
@@ -42,7 +42,7 @@ class EditForm extends Component {
 							}
 						]
 					})(<Input />)}
-				</Form.Item> */}
+				</Form.Item>
 				<Form.Item label="账号" {...formItemLayout}>
 					{getFieldDecorator('username', {
 						initialValue: data.username,

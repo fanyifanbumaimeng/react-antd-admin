@@ -42,7 +42,6 @@ export const routes = [
 	{ path: '/monitor-equipment/search', component: MonitorEquipment },
 
 	{ path: '/system-data/search', component: SystemData },
-
 	{ path: '/chart/line', component: LineChart },
 	{ path: '/chart/keyboard', component: Keyboard },
 	{ path: '/chart/bar', component: BarChart },

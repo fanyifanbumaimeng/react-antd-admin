@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
-class EditForm extends Component {
+class AddForm extends Component {
 	componentWillReceiveProps(nextProps) {
 		!nextProps.visible && this.props.form.resetFields();
 	}
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { data } = this.props;
+		const { data = {} } = this.props;
 		const formItemLayout = {
 			labelCol: { span: 4 },
 			wrapperCol: { span: 20 }
@@ -18,23 +18,23 @@ class EditForm extends Component {
 		// handleSubmit = () => {
 		// }
 		return (
-			<Form onSubmit={() => {
-				
-			}} refs="editForm">
+			<Form refs="addForm">
 				<Form.Item label="用户姓名" {...formItemLayout}>
 					{getFieldDecorator('nickname', {
-						initialValue: data.nickname,
+						initialValue: '',
 						rules: [
 							{
 								required: true,
 								message: '请输入用户姓名'
 							}
 						]
-					})(<Input />)}
+					})(<Input onChange={() => {
+						debugger
+					}} />)}
 				</Form.Item>
-				{/* <Form.Item label="密码" {...formItemLayout}>
+				<Form.Item label="密码" {...formItemLayout}>
 					{getFieldDecorator('password', {
-						initialValue: data.password,
+						initialValue: '',
 						rules: [
 							{
 								required: true,
@@ -42,10 +42,10 @@ class EditForm extends Component {
 							}
 						]
 					})(<Input />)}
-				</Form.Item> */}
+				</Form.Item>
 				<Form.Item label="账号" {...formItemLayout}>
 					{getFieldDecorator('username', {
-						initialValue: data.username,
+						initialValue: '',
 						rules: [
 							{
 								required: true,
@@ -58,7 +58,6 @@ class EditForm extends Component {
 					<Button type="submit" onClick={(e) => {
 						e.preventDefault();
 						this.props.form.validateFieldsAndScroll((err, values) => {
-						
 							if (!err) {
 								this.props.handleSubmit(values)
 								console.log('Received values of form: ', values);
@@ -72,4 +71,4 @@ class EditForm extends Component {
 		);
 	}
 }
-export default Form.create()(EditForm);
+export default Form.create()(AddForm);

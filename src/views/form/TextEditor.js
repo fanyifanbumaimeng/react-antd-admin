@@ -48,14 +48,15 @@ class TextEditor extends Component {
 			const data = new FormData(); // eslint-disable-line no-undef
 			data.append('image', file);
 			xhr.send(data);
-			xhr.addEventListener('load', () => {
-				const response = JSON.parse(xhr.responseText);
-				resolve(response);
-			});
-			xhr.addEventListener('error', () => {
-				const error = JSON.parse(xhr.responseText);
-				reject(error);
-			});
+			// xhr.addEventListener('load', () => {
+			// 	const response = xhr.responseText && JSON.parse(xhr.responseText);
+			// 	resolve(response);
+			// });
+			// xhr.addEventListener('error', () => {
+			// 	debugger
+			// 	const error = xhr.responseText && JSON.parse(xhr.responseText);
+			// 	reject(error);
+			// });
 		});
 
 	render() {

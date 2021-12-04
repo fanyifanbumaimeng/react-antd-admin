@@ -1,16 +1,17 @@
 'use strict';
-
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const ignoredFiles = require('react-dev-utils/ignoredFiles');
 const paths = require('./paths');
 const fs = require('fs');
+var cors = require('cors');
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
 
-module.exports = function(proxy, allowedHost) {
+module.exports = function(proxyParams, allowedHost) {
   return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
@@ -29,7 +30,7 @@ module.exports = function(proxy, allowedHost) {
     // specified the `proxy` setting. Finally, we let you override it if you
     // really know what you're doing with a special environment variable.
     disableHostCheck:
-      !proxy || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true',
+      !proxyParams || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true',
     // Enable gzip compression of generated files.
     compress: true,
     // Silence WebpackDevServer's own logs since they're generally not useful.
@@ -81,18 +82,40 @@ module.exports = function(proxy, allowedHost) {
       disableDotRule: true,
     },
     public: allowedHost,
-    proxy,
+    proxy: proxyParams,
     before(app, server) {
       if (fs.existsSync(paths.proxySetup)) {
         // This registers user provided middleware for proxy reasons
         require(paths.proxySetup)(app);
       }
+      app.use(cors());
 
+
+      //设置跨域访问
+      app.options("/*", function (req, res, next) {
+        // Access-Control-Allow-Credentials: true
+        // Access-Control-Allow-Origin: http://localhost:8080
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+        console.log("OPTIONS:OK");
+        res.sendStatus(200);
+        res.send({ code: 200 })
+      });
+      app.all('*', function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        next();
+      });
       // This lets us fetch source contents from webpack for the error overlay
       app.use(evalSourceMapMiddleware(server));
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());
-
+      console.log(createProxyMiddleware, '=====>>>')
+      app.use(createProxyMiddleware('/api', {
+        target: 'http://8.141.159.212:8080',
+        logLevel: 'debug',
+        changeOrigin: true
+      }));
       // This service worker file is effectively a 'no-op' that will reset any
       // previous service worker registered for the same host:port combination.
       // We do this in development to avoid hitting the production cache if

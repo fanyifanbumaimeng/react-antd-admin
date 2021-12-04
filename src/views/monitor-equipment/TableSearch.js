@@ -1,35 +1,80 @@
 import React, { Component } from 'react';
-import { Table, Row, Col, Button, Form, Select } from 'antd';
+import { Table, Row, Col, Button, Form, Select, Modal } from 'antd';
 import $axios from '../../axios/$axios';
+import EditForm from './components/EditForm';
+import AddForm from './components/AddForm';
+
 const FormItem = Form.Item;
 const { Option } = Select;
+
+
+
 class TableSearch extends Component {
 	state = {
 		data: [],
 		pagination: {
-			pageSize: 10,
+			pageSize: 20,
 			current: 1
 		},
 		loading: false,
 		selectedRowKeys: [],
+// 序号，KKS (长度256)，设备名称描述(长度256)，类型，点1路径，点2路径，算法点，打包点，备注；全部读取后分页显示在页面。每页显示20条记录。
 		columns: [
 			{
-				title: 'Name',
-				dataIndex: 'name',
+				title: '序号',
+				dataIndex: 'index',
 				sorter: true,
-				render: name => `${name.first} ${name.last}`,
 				width: '20%'
 			},
 			{
-				title: 'Gender',
-				dataIndex: 'gender',
+				title: 'kks',
+				dataIndex: 'kks',
 				filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
 				width: '20%'
 			},
 			{
-				title: 'Email',
-				dataIndex: 'email'
-			}
+				title: '设备名称描述',
+				dataIndex: 'desc'
+			},
+			{
+				title: '类型',
+				dataIndex: 'type'
+			},
+			{
+				title: '点1路径',
+				dataIndex: 'location1'
+			},
+			{
+				title: '点2路径',
+				dataIndex: 'location2'
+			},
+			{
+				title: '算法点',
+				dataIndex: 'ari'
+			},
+			{
+				title: '打包点',
+				dataIndex: 'location3'
+			},
+			{
+				title: '备注',
+				dataIndex: 'remark'
+			},
+			{
+				title: '操作',
+				dataIndex: 'operation',
+				render: (record, data) => {
+					return <div>
+						{/* <Button onClick={() => {
+							
+						}}>删除</Button> */}
+						<Button onClick={() => {
+							this.setState({ currentRow: data, visible: true });
+						}}>编辑</Button>
+					</div>
+				}
+			},
+			
 		]
 	};
 
@@ -53,16 +98,68 @@ class TableSearch extends Component {
 	};
 	fetch = (params = {}) => {
 		this.setState({ loading: true });
-		$axios.get('https://randomuser.me/api', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
+		$axios.get('/api/dataMonitor', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
-			pagination.total = 200;
+			pagination.total = data.data.total;
 			this.setState({
 				loading: false,
-				data: data.data.results,
+				data: data.data.list,
 				pagination
 			});
 		});
 	};
+	
+	handleOk = () => {
+		this.setState({ visible: false });
+	};
+
+
+	handleCancel = () => {
+		this.setState({ visible: false });
+	};
+	
+	addUser = () => {
+		this.setState({
+			currentRow: {},
+			modalVisible: true,
+		})
+	}
+	handleAddSubmit = (values) => {
+		this.setState({ loading: true });
+		$axios.put('/api/devices', { ...values }).then(data => {
+			this.setState({
+				loading: false,
+				modalVisible: false
+			});
+			this.fetch()
+		});
+	}
+	
+	editUsers = (values) => {
+		this.setState({ loading: true });
+		$axios.put('/api/devices', { ...values }).then(data => {
+			this.setState({
+				loading: false,
+				visible: false
+			});
+			this.fetch()
+		});
+	}
+	handleAddVisible = () => {
+		this.setState({
+			modalVisible: !this.state.modalVisible
+		})
+	}
+	handleEditSubmit = (values) => {
+		const { currentRow } = this.state;
+		this.editUsers({
+			dataList: [{
+				...currentRow,
+				...values,
+			}]
+		})
+		debugger
+	}
 
 	onSelectedRowKeysChange = selectedRowKeys => {
 		this.setState({ selectedRowKeys });
@@ -111,7 +208,7 @@ class TableSearch extends Component {
 			<div className="shadow-radius">
 				<Form className="search-form" style={{ paddingBottom: 0 }}>
 					<Row gutter={24}>
-						<Col span={4}>
+						{/* <Col span={4}>
 							<FormItem label="Gender">
 								{getFieldDecorator('gender')(
 									<Select placeholder="请选择">
@@ -120,7 +217,7 @@ class TableSearch extends Component {
 									</Select>
 								)}
 							</FormItem>
-						</Col>
+						</Col> */}
 						<Col span={2} style={{ marginRight: '10px', display: 'flex' }} className="serarch-btns">
 							<FormItem>
 								<Button icon="search" type="primary" htmlType="submit" className={'btn'} onClick={this.handleSearch}>
@@ -132,10 +229,21 @@ class TableSearch extends Component {
 									重置
 								</Button>
 							</FormItem>
+							<FormItem>
+								<Button className={'btn'} onClick={this.addUser}>
+									添加新设备
+								</Button>
+							</FormItem>
 						</Col>
 					</Row>
 				</Form>
-				<Table bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.location.postcode} rowSelection={rowSelection} />
+				<Modal title="编辑信息" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel} footer={null}>
+					<AddForm data={this.state.currentRow} visible={this.state.visible} wrappedComponentRef={form => (this.formRef = form)} handleSubmit={this.handleEditSubmit} />
+				</Modal>
+				<Modal title="添加用户" visible={this.state.modalVisible} onOk={this.handleAddVisible} onCancel={this.handleAddVisible} footer={null}>
+					<AddForm visible={this.state.modalVisible} wrappedComponentRef={form => (this.formRef = form)} handleSubmit={this.handleAddSubmit} />
+				</Modal>
+				<Table bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id} rowSelection={rowSelection} />
 			</div>
 		);
 	}

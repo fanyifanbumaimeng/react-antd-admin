@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import { connect } from 'react-redux';
 import { setUserInfo } from '@/redux/actions/userInfo';
 import '@/assets/css/login';
+import $axios from '../axios/$axios';
 
 const FormItem = Form.Item;
 class Login extends Component {
@@ -18,9 +19,20 @@ class Login extends Component {
 			if (!err) {
 				localStorage.setItem('isLogin', '1');
 				// 模拟生成一些数据
-				this.props.setUserInfo(Object.assign({}, values, { role: { type: 1, name: '超级管理员' } }));
-				localStorage.setItem('userInfo', JSON.stringify(Object.assign({}, values, { role: { type: 1, name: '超级管理员' } })));
-				this.props.history.push('/dashboard');
+				$axios.post('/api/sysUser/login', values).then(res => {
+					if (res.data) {
+						$axios.defaults.headers.common["Authorization"] = `Bearer  ${res.data.token}`;
+						localStorage.setItem('Authorization', `Bearer  ${res.data.token}`);
+						const { userInfo } = res.data;
+						localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+						this.props.setUserInfo(userInfo);
+						this.props.history.push('/');
+
+					} else {
+						message.info(res.message)
+					}
+				});
 			} else {
 				console.log(err);
 			}
@@ -59,7 +71,7 @@ class Login extends Component {
 					<div className="title">后台管理系统</div>
 					<Form className="login-form">
 						<FormItem>
-							{getFieldDecorator('userName', {
+							{getFieldDecorator('username', {
 								rules: [{ required: true, message: '请填写用户名！' }]
 							})(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />)}
 						</FormItem>

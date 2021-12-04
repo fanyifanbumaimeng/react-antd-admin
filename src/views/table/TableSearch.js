@@ -17,7 +17,6 @@ class TableSearch extends Component {
 				title: 'Name',
 				dataIndex: 'name',
 				sorter: true,
-				render: name => `${name.first} ${name.last}`,
 				width: '20%'
 			},
 			{
@@ -58,7 +57,7 @@ class TableSearch extends Component {
 			pagination.total = 200;
 			this.setState({
 				loading: false,
-				data: data.data.results,
+				data: data.results,
 				pagination
 			});
 		});

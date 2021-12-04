@@ -4,8 +4,10 @@ const $axios = axios.create({
 	baseURL: process.env.REACT_APP_BASE_URL,
 	timeout: 6000,
 	retry:4,
-	retryDelay:1000
+	retryDelay: 1000,
+	headers: { 'Content-Type': 'application/json'	},
 });
+$axios.defaults.headers.common["Authorization"] = localStorage.getItem('Authorization')
 
 //请求拦截
 $axios.interceptors.request.use(
@@ -32,7 +34,7 @@ $axios.interceptors.response.use(
 		if (response.data.success === false) {
 			message.error(response.data.message);
 		}
-		return response;
+		return response.data;
 	},
 	function(error) {
 		if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {

@@ -69,7 +69,7 @@ class TopHeader extends Component {
 			<Menu className="drop-list">
 				<Menu.Item key="user">
 					<Icon type="user" />
-					{Object.keys(this.props.userInfo).length > 0 && this.props.userInfo.role.name}
+					{Object.keys(this.props.userInfo).length > 0 && this.props?.userInfo?.nickname}
 				</Menu.Item>
 				<Menu.Item key="logout" onClick={this.handleLogout}>
 					<Icon type="logout" />
