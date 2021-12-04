@@ -3,7 +3,7 @@ import { Table, Row, Col, Button, Form, Select, Modal } from 'antd';
 import $axios from '../../axios/$axios';
 import EditForm from './components/EditForm';
 import AddForm from './components/AddForm';
-
+const { confirm } = Modal;
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -22,7 +22,7 @@ class TableSearch extends Component {
 		columns: [
 			{
 				title: '序号',
-				dataIndex: 'index',
+				dataIndex: 'no',
 				sorter: true,
 				width: '20%'
 			},
@@ -65,9 +65,21 @@ class TableSearch extends Component {
 				dataIndex: 'operation',
 				render: (record, data) => {
 					return <div>
-						{/* <Button onClick={() => {
-							
-						}}>删除</Button> */}
+						<Button onClick={() => {
+							confirm({
+								title: '温馨提示',
+								content: '确定要删除当前内容吗？',
+								okText: '确定',
+								cancelText: '取消',
+								onOk:() => {
+									$axios.put('/api/devices', { nos: [data.no] }).then(data => {
+										debugger
+										this.fetch()
+									});
+								},
+								onCancel() { }
+							});
+						}}>删除</Button>
 						<Button onClick={() => {
 							this.setState({ currentRow: data, visible: true });
 						}}>编辑</Button>
@@ -98,7 +110,7 @@ class TableSearch extends Component {
 	};
 	fetch = (params = {}) => {
 		this.setState({ loading: true });
-		$axios.get('/api/dataMonitor', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
+		$axios.get('/api/devices', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
 			pagination.total = data.data.total;
 			this.setState({
@@ -202,7 +214,10 @@ class TableSearch extends Component {
 			onShowSizeChange: (current, pageSize) => this.onShowSizeChange(current, pageSize), //  pageSize 变化的回调
 			...this.state.pagination,
 			showSizeChanger: true,
-			showQuickJumper: true
+			showQuickJumper: true,
+			showTotal: () => {
+				return `总共有 ${this.state?.pagination?.total || 0} 条数据`;
+			},
 		};
 		return (
 			<div className="shadow-radius">

@@ -68,7 +68,7 @@ class Login extends Component {
 					}}
 				/>
 				<div className="content">
-					<div className="title">后台管理系统</div>
+					<div className="title">操作记录查询展示系统</div>
 					<Form className="login-form">
 						<FormItem>
 							{getFieldDecorator('username', {
@@ -84,7 +84,7 @@ class Login extends Component {
 							<Button type="primary" htmlType="submit" block onClick={this.login}>
 								登录
 							</Button>
-							<div style={{ color: '#999',paddingTop:'10px',textAlign:'center' }}>Tips : 输入任意用户名密码即可</div>
+							{/* <div style={{ color: '#999',paddingTop:'10px',textAlign:'center' }}>Tips : 输入任意用户名密码即可</div> */}
 						</FormItem>
 					</Form>
 				</div>

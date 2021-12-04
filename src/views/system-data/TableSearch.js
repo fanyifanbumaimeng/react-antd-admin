@@ -10,8 +10,9 @@ class TableSearch extends Component {
 	state = {
 		data: [],
 		pagination: {
-			pageSize: 10,
-			current: 1
+			pageSize: 20,
+			current: 1,
+			total: 0,
 		},
 		loading: false,
 		selectedRowKeys: [],
@@ -78,9 +79,10 @@ class TableSearch extends Component {
 	};
 	fetch = (params = {}) => {
 		this.setState({ loading: true });
-		$axios.get('/api/devices', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
+		$axios.get('/api/dataMonitor', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
 			pagination.total = data.data.total;
+			debugger
 			this.setState({
 				loading: false,
 				data: data.data.list,
@@ -106,7 +108,7 @@ class TableSearch extends Component {
 				...values,
 				startTime,
 				endTime,
-				page: this.state.pagination.current
+				pageNum: this.state.pagination.current
 			}
 			delete params.time;
 			this.fetch(params);
@@ -139,7 +141,10 @@ class TableSearch extends Component {
 			onShowSizeChange: (current, pageSize) => this.onShowSizeChange(current, pageSize), //  pageSize 变化的回调
 			...this.state.pagination,
 			showSizeChanger: true,
-			showQuickJumper: true
+			showQuickJumper: true,
+			showTotal:  ()  => {
+				return `总共有 ${this.state?.pagination?.total || 0} 条数据`;
+			},
 		};
 		return (
 			<div className="shadow-radius">

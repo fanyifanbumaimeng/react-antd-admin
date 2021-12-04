@@ -46,9 +46,21 @@ class TableSearch extends Component {
 				dataIndex: 'operation',
 				render: (record, data) => {
 					return <div>
-						{/* <Button onClick={() => {
-							
-						}}>删除</Button> */}
+						<Button onClick={() => {
+							confirm({
+								title: '温馨提示',
+								content: '确定要删除当前内容吗？',
+								okText: '确定',
+								cancelText: '取消',
+								onOk() {
+									$axios.post('/api/sysUser', { ids: [data.id] }).then(data => {
+										debugger
+										this.fetch()
+									});
+								},
+								onCancel() { }
+							});
+						}}>删除</Button>
 						<Button onClick={() => {
 							this.setState({ currentRow: data, visible: true });
 						}}>编辑</Button>
@@ -183,8 +195,6 @@ class TableSearch extends Component {
 			},
 			onCancel() { }
 		});
-
-		// /api/sysUser
 	}
 	
 	onShowSizeChange(current, pageSize) {
@@ -208,7 +218,10 @@ class TableSearch extends Component {
 			onShowSizeChange: (current, pageSize) => this.onShowSizeChange(current, pageSize), //  pageSize 变化的回调
 			...this.state.pagination,
 			showSizeChanger: true,
-			showQuickJumper: true
+			showQuickJumper: true,
+			showTotal: () => {
+				return `总共有 ${this.state?.pagination?.total || 0} 条数据`;
+			},
 		};
 		return (
 			<div className="shadow-radius">
