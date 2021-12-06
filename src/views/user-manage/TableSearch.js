@@ -54,7 +54,6 @@ class TableSearch extends Component {
 								cancelText: '取消',
 								onOk() {
 									$axios.post('/api/sysUser', { ids: [data.id] }).then(data => {
-										debugger
 										this.fetch()
 									});
 								},
@@ -123,7 +122,6 @@ class TableSearch extends Component {
 				...values,
 			}]
 		})
-		debugger
 	}
 	handleDel(row) {
 		confirm({

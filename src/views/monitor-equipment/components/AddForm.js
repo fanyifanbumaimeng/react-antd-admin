@@ -29,7 +29,6 @@ class AddForm extends Component {
 							}
 						]
 					})(<Input onChange={() => {
-						debugger
 					}} />)}
 				</Form.Item>
 				<Form.Item label="设备名称" {...formItemLayout}>

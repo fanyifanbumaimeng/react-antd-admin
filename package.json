@@ -66,7 +66,6 @@
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.13.2",
     "react-hot-loader": "^4.11.1",
-    "react-particles-js": "^2.6.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^4.1.1",

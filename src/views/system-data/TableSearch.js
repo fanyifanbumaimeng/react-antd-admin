@@ -82,7 +82,6 @@ class TableSearch extends Component {
 		$axios.get('/api/dataMonitor', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
 			pagination.total = data.data.total;
-			debugger
 			this.setState({
 				loading: false,
 				data: data.data.list,

@@ -73,7 +73,6 @@ class TableSearch extends Component {
 								cancelText: '取消',
 								onOk:() => {
 									$axios.put('/api/devices', { nos: [data.no] }).then(data => {
-										debugger
 										this.fetch()
 									});
 								},
@@ -170,7 +169,6 @@ class TableSearch extends Component {
 				...values,
 			}]
 		})
-		debugger
 	}
 
 	onSelectedRowKeysChange = selectedRowKeys => {
