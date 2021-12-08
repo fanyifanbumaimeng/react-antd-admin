@@ -8,12 +8,12 @@ class AddForm extends Component {
 		const { getFieldDecorator } = this.props.form;
 		const { data = {} } = this.props;
 		const formItemLayout = {
-			labelCol: { span: 4 },
-			wrapperCol: { span: 20 }
+			labelCol: { span: 6 },
+			wrapperCol: { span: 18 }
 		};
 		const formTailLayout = {
-			labelCol: { span: 4 },
-			wrapperCol: { span: 20, offset: 4 }
+			labelCol: { span: 6 },
+			wrapperCol: { span: 18, offset: 4 }
 		};
 		// handleSubmit = () => {
 		// }
@@ -31,7 +31,7 @@ class AddForm extends Component {
 					})(<Input onChange={() => {
 					}} />)}
 				</Form.Item>
-				<Form.Item label="设备名称" {...formItemLayout}>
+				<Form.Item label="设备名称描述" {...formItemLayout}>
 					{getFieldDecorator('name', {
 						initialValue: data.name,
 						rules: [
@@ -42,18 +42,29 @@ class AddForm extends Component {
 						]
 					})(<Input />)}
 				</Form.Item>
+				{/* <Form.Item label="设备名称描述" {...formItemLayout}>
+					{getFieldDecorator('desc', {
+						initialValue: data.desc,
+						rules: [
+							{
+								required: true,
+								message: '请输入设备名称描述'
+							}
+						]
+					})(<Input />)}
+				</Form.Item> */}
 				<Form.Item label="类型" {...formItemLayout}>
 					{getFieldDecorator('type', {
 						initialValue: data.type,
 						rules: [
 							{
 								required: true,
-								message: '请输入正确的账号',
+								message: '请输入正确的类型',
 							}
 						]
 					})(<Radio.Group>
-						<Radio value="0">开关型</Radio>
-						<Radio value="1">模拟型</Radio>
+						<Radio value={0}>开关型</Radio>
+						<Radio value={1}>模拟型</Radio>
 					</Radio.Group>
 )}
 				</Form.Item>
@@ -104,12 +115,12 @@ class AddForm extends Component {
 				<Form.Item label="备注" {...formItemLayout}>
 					{getFieldDecorator('remark', {
 						initialValue: data.remark,
-						rules: [
-							{
-								required: true,
-								message: '请输入备注',
-							}
-						]
+						// rules: [
+						// 	{
+						// 		required: true,
+						// 		message: '请输入备注',
+						// 	}
+						// ]
 					})(<Input />)}
 				</Form.Item>
 	

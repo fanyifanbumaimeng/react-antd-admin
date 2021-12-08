@@ -26,7 +26,7 @@ class Index extends Component {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
 	setUserInfo: data => {
-		dispatch(setUserInfo(data));
+		// dispatch(setUserInfo(data));
 	}
 });
 export default connect(

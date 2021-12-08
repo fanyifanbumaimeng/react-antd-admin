@@ -86,10 +86,10 @@ class SideNenu extends Component {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
 	setUserInfo: data => {
-		dispatch(setUserInfo(data));
+		// dispatch(setUserInfo(data));
 	},
 	addTag: data => {
-		dispatch(addTag(data));
+		// dispatch(addTag(data));
 	}
 });
 export default connect(

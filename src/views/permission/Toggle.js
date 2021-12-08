@@ -48,13 +48,13 @@ class Toggle extends Component {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
 	setUserInfo: data => {
-		dispatch(setUserInfo(data));
+		// dispatch(setUserInfo(data));
 	},
 	addTag: data => {
-		dispatch(addTag(data));
+		// dispatch(addTag(data));
 	},
 	removeTag: data => {
-		dispatch(removeTag(data));
+		// dispatch(removeTag(data));
 	}
 });
 

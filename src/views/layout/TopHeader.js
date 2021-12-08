@@ -83,20 +83,19 @@ class TopHeader extends Component {
 		return (
 			<div className="top-header">
 				<div className="top-header-inner">
-					<Icon className="trigger" type={true ? 'menu-unfold' : 'menu-fold'} onClick={this.toggle} />
-					<div className="header-title">React-antd-admin 通用操作记录查询展示系统</div>
+					<div type={true ? 'menu-unfold' : 'menu-fold'} onClick={() => {}} />
 					<div className="header-right">
 						<div className="full-screen">
 							<FullScreen />
 						</div>
-						<div className="setting">
+						{/* <div className="setting">
 							<Icon style={{ fontSize: '21px', cursor: 'pointer' }} type="setting" onClick={this.setting} />
-						</div>
-						<div className="news-wrap">
+						</div> */}
+						{/* <div className="news-wrap">
 							<Badge count={3}>
 								<Icon style={{ fontSize: '21px', cursor: 'pointer' }} type="bell" onClick={this.toNews} />
 							</Badge>
-						</div>
+						</div> */}
 						<div className="dropdown-wrap" id="dropdown-wrap" style={{ cursor: 'pointer' }}>
 							<Dropdown getPopupContainer={() => document.getElementById('dropdown-wrap')} overlay={DropdownList}>
 								<div>
@@ -117,25 +116,25 @@ class TopHeader extends Component {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
 	setCollapse: data => {
-		dispatch(setCollapse(data));
+		// dispatch(setCollapse(data));
 	},
 	setUserInfo: data => {
-		dispatch(setUserInfo(data));
+		// dispatch(setUserInfo(data));
 	},
 	emptyTag: () => {
-		dispatch(emptyTag());
+		// dispatch(emptyTag());
 	},
 	addTag: data => {
-		dispatch(addTag(data));
+		// dispatch(addTag(data));
 	},
 	setBreadCrumb: data => {
-		dispatch(setBreadCrumb(data));
+		// dispatch(setBreadCrumb(data));
 	},
 	setTags: data => {
-		dispatch(setTags(data));
+		// dispatch(setTags(data));
 	},
 	setTheme: data => {
-		dispatch(setTheme(data));
+		// dispatch(setTheme(data));
 	}
 });
 export default connect(

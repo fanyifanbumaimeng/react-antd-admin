@@ -8,12 +8,12 @@ class EditForm extends Component {
 		const { getFieldDecorator } = this.props.form;
 		const { data } = this.props;
 		const formItemLayout = {
-			labelCol: { span: 4 },
-			wrapperCol: { span: 20 }
+			labelCol: { span: 6 },
+			wrapperCol: { span: 18 }
 		};
 		const formTailLayout = {
-			labelCol: { span: 4 },
-			wrapperCol: { span: 20, offset: 4 }
+			labelCol: { span: 6 },
+			wrapperCol: { span: 18, offset: 4 }
 		};
 		// handleSubmit = () => {
 		// }

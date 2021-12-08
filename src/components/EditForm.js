@@ -43,7 +43,7 @@ class EditForm extends Component {
 						]
 					})(<Input />)}
 				</Form.Item> */}
-				<Form.Item label="账号" {...formItemLayout}>
+				{/* <Form.Item label="账号" {...formItemLayout}>
 					{getFieldDecorator('username', {
 						initialValue: data.username,
 						rules: [
@@ -53,7 +53,7 @@ class EditForm extends Component {
 							}
 						]
 					})(<Input />)}
-				</Form.Item>
+				</Form.Item> */}
 				<Form.Item {...formTailLayout}>
 					<Button type="submit" onClick={(e) => {
 						e.preventDefault();

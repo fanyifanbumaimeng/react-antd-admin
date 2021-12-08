@@ -21,50 +21,58 @@ class TableSearch extends Component {
 // 序号，KKS (长度256)，设备名称描述(长度256)，类型，点1路径，点2路径，算法点，打包点，备注；全部读取后分页显示在页面。每页显示20条记录。
 		columns: [
 			{
-				title: '序号',
-				dataIndex: 'no',
-				sorter: true,
-				width: '20%'
-			},
-			{
 				title: 'kks',
 				dataIndex: 'kks',
-				filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
-				width: '20%'
+				width: '10%'
 			},
 			{
 				title: '设备名称描述',
-				dataIndex: 'desc'
+				dataIndex: 'name',
+				width: '10%'
+
 			},
 			{
 				title: '类型',
-				dataIndex: 'type'
+				dataIndex: 'type',
+				render: (record) => {
+					return record === 1 ? '模拟型' : '开关型'
+				},
+				width: '8%'
 			},
 			{
 				title: '点1路径',
-				dataIndex: 'location1'
+				dataIndex: 'point1Path',
+				width: '10%'
 			},
 			{
 				title: '点2路径',
-				dataIndex: 'location2'
+				dataIndex: 'point2Path',
+				width: '10%'
+
 			},
 			{
 				title: '算法点',
-				dataIndex: 'ari'
+				dataIndex: 'algorithmPoint',
+				width: '10%'
+
 			},
 			{
 				title: '打包点',
-				dataIndex: 'location3'
+				dataIndex: 'packagePoint',
+				width: '10%'
+
 			},
 			{
 				title: '备注',
-				dataIndex: 'remark'
+				dataIndex: 'remark',
+				width: '10%'
+
 			},
 			{
 				title: '操作',
 				dataIndex: 'operation',
 				render: (record, data) => {
-					return <div>
+					return this.state.isSuper ? <div>
 						<Button onClick={() => {
 							confirm({
 								title: '温馨提示',
@@ -82,7 +90,7 @@ class TableSearch extends Component {
 						<Button onClick={() => {
 							this.setState({ currentRow: data, visible: true });
 						}}>编辑</Button>
-					</div>
+					</div>: null
 				}
 			},
 			
@@ -91,6 +99,11 @@ class TableSearch extends Component {
 
 	componentWillMount() {
 		this.fetch();
+		const userInfo = localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo') || {})
+		const isSuper = userInfo?.accountType === 0
+		this.setState({
+			isSuper,
+		})
 	}
 
 	componentWillUnmount() {
@@ -108,7 +121,7 @@ class TableSearch extends Component {
 		});
 	};
 	fetch = (params = {}) => {
-		this.setState({ loading: true });
+		// this.setState({ loading: true });
 		$axios.get('/api/devices', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
 			pagination.total = data.data.total;
@@ -136,8 +149,8 @@ class TableSearch extends Component {
 		})
 	}
 	handleAddSubmit = (values) => {
-		this.setState({ loading: true });
-		$axios.put('/api/devices', { ...values }).then(data => {
+		// this.setState({ loading: true });
+		$axios.put('/api/devices', { dataList: [{ ...values }] }).then(data => {
 			this.setState({
 				loading: false,
 				modalVisible: false
@@ -147,7 +160,7 @@ class TableSearch extends Component {
 	}
 	
 	editUsers = (values) => {
-		this.setState({ loading: true });
+		// this.setState({ loading: true });
 		$axios.put('/api/devices', { ...values }).then(data => {
 			this.setState({
 				loading: false,
@@ -232,7 +245,7 @@ class TableSearch extends Component {
 							</FormItem>
 						</Col> */}
 						<Col span={2} style={{ marginRight: '10px', display: 'flex' }} className="serarch-btns">
-							<FormItem>
+							{/* <FormItem>
 								<Button icon="search" type="primary" htmlType="submit" className={'btn'} onClick={this.handleSearch}>
 									搜索
 								</Button>
@@ -241,12 +254,15 @@ class TableSearch extends Component {
 								<Button className={'btn'} onClick={this.handleReset}>
 									重置
 								</Button>
-							</FormItem>
-							<FormItem>
-								<Button className={'btn'} onClick={this.addUser}>
-									添加新设备
-								</Button>
-							</FormItem>
+							</FormItem> */}
+							{
+								this.state.isSuper ? <FormItem>
+									<Button className={'btn'} onClick={this.addUser}>
+										添加新设备
+									</Button>
+								</FormItem>: null
+							}
+							
 						</Col>
 					</Row>
 				</Form>
@@ -256,7 +272,7 @@ class TableSearch extends Component {
 				<Modal title="添加用户" visible={this.state.modalVisible} onOk={this.handleAddVisible} onCancel={this.handleAddVisible} footer={null}>
 					<AddForm visible={this.state.modalVisible} wrappedComponentRef={form => (this.formRef = form)} handleSubmit={this.handleAddSubmit} />
 				</Modal>
-				<Table bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id} rowSelection={rowSelection} />
+				<Table  bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id} />
 			</div>
 		);
 	}

@@ -25,37 +25,27 @@ class TableSearch extends Component {
 				title: '设备名称',
 				dataIndex: 'name',
 			},
-			{
-				title: '设备类型',
-				dataIndex: 'type',
-				render: (record) => {
-					return record === 1 ? '模拟型': '开关型'
-				}
-			},
+			// {
+			// 	title: '设备类型',
+			// 	dataIndex: 'type',
+			// 	render: (record) => {
+			// 		return record === 1 ? '模拟型': '开关型'
+			// 	}
+			// },
+			// operation
 			{
 				title: 'kks',
 				dataIndex: 'kks'
 			},
 			{
-				title: '点1路径',
-				dataIndex: 'point1Path'
+				title: '操作',
+				dataIndex: 'operation'
 			},
 			{
-				title: '点2路径',
-				dataIndex: 'point2Path'
+				title: '时间',
+				dataIndex: 'time'
 			},
-			{
-				title: '算法点',
-				dataIndex: 'algorithmPoint'
-			},
-			{
-				title: '打包点',
-				dataIndex: 'packagePoint'
-			},
-			{
-				title: '备注',
-				dataIndex: 'remark'
-			},
+
 		]
 	};
 
@@ -78,7 +68,7 @@ class TableSearch extends Component {
 		});
 	};
 	fetch = (params = {}) => {
-		this.setState({ loading: true });
+		// this.setState({ loading: true });
 		$axios.get('/api/dataMonitor', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
 			pagination.total = data.data.total;
@@ -100,8 +90,8 @@ class TableSearch extends Component {
 			const { gender } = values;
 			let startTime, endTime;
 			if (values?.time?.length) {
-				startTime = values?.time[0].valueOf()
-				endTime = values?.time[1].valueOf()
+				startTime = values?.time[0].startOf('d').valueOf()
+				endTime = values?.time[1].endOf('d').valueOf()
 			}
 			const params = {
 				...values,
@@ -150,21 +140,9 @@ class TableSearch extends Component {
 				<Form className="search-form" style={{ paddingBottom: 0 }}>
 					<Row gutter={24}>
 						<Col span={4}>
-							<FormItem label="类型">
-								{getFieldDecorator('type')(
-									<Select placeholder="请选择类型">
-										<Option value="1">开关型</Option>
-										<Option value="0">模拟型</Option>
-									</Select>
-								)}
-							</FormItem>
-
-						</Col>
-						<Col span={4}>
 							<FormItem label="时间">
 								{getFieldDecorator('time')(
 									<RangePicker
-										onChange={this.onPickerChange}
 										value={this.state.startTime === undefined || this.state.endTime === undefined || this.state.startTime === "" || this.state.endTime === "" ? null : [moment(this.state.startTime, dateFormat), moment(this.state.endTime, dateFormat)]}
 										format={dateFormat}
 										placeholder={['开始时间', '结束时间']}
@@ -178,27 +156,12 @@ class TableSearch extends Component {
 								{getFieldDecorator('name')(
 									<Input
 										placeholder="设备名称"
-										onChange={this.onPickerChange}
 										value={this.state.startTime === undefined || this.state.endTime === undefined || this.state.startTime === "" || this.state.endTime === "" ? null : [moment(this.state.startTime, dateFormat), moment(this.state.endTime, dateFormat)]}
 										format={dateFormat}
 									/>
 								)}
 							</FormItem>
 						</Col>
-						<Col span={4}>
-							<FormItem label="kks">
-								{getFieldDecorator('kks')(
-									<Input
-										placeholder="请输入kks"
-										onChange={this.onPickerChange}
-										value={this.state.startTime === undefined || this.state.endTime === undefined || this.state.startTime === "" || this.state.endTime === "" ? null : [moment(this.state.startTime, dateFormat), moment(this.state.endTime, dateFormat)]}
-										format={dateFormat}
-									/>
-								)}
-							</FormItem>
-						</Col>
-
-
 						<Col span={2} style={{ marginRight: '10px', display: 'flex' }} className="serarch-btns">
 							<FormItem>
 								<Button icon="search" type="primary" htmlType="submit" className={'btn'} onClick={this.handleSearch}>
@@ -213,7 +176,7 @@ class TableSearch extends Component {
 						</Col>
 					</Row>
 				</Form>
-				<Table scroll={{ x: 1000 }} bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id} rowSelection={rowSelection} />
+				<Table  bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id}  />
 			</div>
 		);
 	}

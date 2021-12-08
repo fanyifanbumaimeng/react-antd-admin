@@ -21,13 +21,10 @@ class TableSearch extends Component {
 			{
 				title: 'id',
 				dataIndex: 'id',
-				width: '20%'
 			},
 			{
 				title: '用户姓名',
 				dataIndex: 'nickname',
-				sorter: true,
-				width: '20%'
 			},
 			{
 				title: '账号',
@@ -46,23 +43,29 @@ class TableSearch extends Component {
 				dataIndex: 'operation',
 				render: (record, data) => {
 					return <div>
-						<Button onClick={() => {
-							confirm({
-								title: '温馨提示',
-								content: '确定要删除当前内容吗？',
-								okText: '确定',
-								cancelText: '取消',
-								onOk() {
-									$axios.post('/api/sysUser', { ids: [data.id] }).then(data => {
-										this.fetch()
+						{
+							this.state.isSuper && data.accountType === 1 ? <>
+								
+								<Button onClick={() => {
+									confirm({
+										title: '温馨提示',
+										content: '确定要删除当前内容吗？',
+										okText: '确定',
+										cancelText: '取消',
+										onOk: () => {
+											$axios.put('/api/sysUser', { ids: [data.id] }).then(data => {
+												this.fetch()
+											});
+										},
+										onCancel() { }
 									});
-								},
-								onCancel() { }
-							});
-						}}>删除</Button>
-						<Button onClick={() => {
-							this.setState({ currentRow: data, visible: true });
-						}}>编辑</Button>
+								}}>删除</Button>
+								<Button style={{ marginLeft: 8 }} onClick={() => {
+									this.setState({ currentRow: data, visible: true });
+								}}>编辑</Button>
+								
+							</>: null
+						}
 					</div>
 				}
 			},
@@ -71,6 +74,11 @@ class TableSearch extends Component {
 
 	componentWillMount() {
 		this.fetch();
+		const userInfo = localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo') || {})
+		const isSuper = userInfo?.accountType === 0
+		this.setState({
+			isSuper,
+		})
 	}
 
 	componentWillUnmount() {
@@ -93,7 +101,7 @@ class TableSearch extends Component {
 		})
 	}
 	fetch = (params = {}) => {
-		this.setState({ loading: true });
+		// this.setState({ loading: true });
 		$axios.get('/api/sysUser', { params: { results: this.state.pagination.pageSize, ...params } }).then(data => {
 			const pagination = { ...this.state.pagination };
 			pagination.total = data.data.total;
@@ -105,11 +113,11 @@ class TableSearch extends Component {
 		});
 	};
 	editUsers = (values) => {
-		this.setState({ loading: true });
+		// this.setState({ loading: true });
 		$axios.put('/api/sysUser', { ...values }).then(data => {
 			this.setState({
 				loading: false,
-				
+				visible: false,
 			});
 			this.fetch()
 		});
@@ -136,6 +144,7 @@ class TableSearch extends Component {
 		});
 	}
 	handleOk = () => {
+		debugger
 		this.setState({ visible: false });
 	};
 
@@ -171,8 +180,8 @@ class TableSearch extends Component {
 		})
 	}
 	handleAddSubmit = (values) => {
-		this.setState({ loading: true });
-		$axios.put('/api/sysUser', { ...values }).then(data => {
+		// this.setState({ loading: true });
+		$axios.put('/api/sysUser', { dataList: [{ ...values, accountType: 1 }] }).then(data => {
 			this.setState({
 				loading: false,
 				modalVisible: false
@@ -236,7 +245,7 @@ class TableSearch extends Component {
 							</FormItem>
 						</Col> */}
 						<Col span={2} style={{ marginRight: '10px', display: 'flex' }} className="serarch-btns">
-							<FormItem>
+							{/* <FormItem>
 								<Button icon="search" type="primary" htmlType="submit" className={'btn'} onClick={this.handleSearch}>
 									搜索
 								</Button>
@@ -245,17 +254,20 @@ class TableSearch extends Component {
 								<Button className={'btn'} onClick={this.handleReset}>
 									重置
 								</Button>
-							</FormItem>
-							<FormItem>
-								<Button className={'btn'} onClick={this.addUser}>
-									添加新用户
-								</Button>
-							</FormItem>
-							<FormItem>
+							</FormItem> */}
+							{
+								this.state.isSuper ? <FormItem>
+									<Button className={'btn'} onClick={this.addUser}>
+										添加新用户
+									</Button>
+								</FormItem>:null
+							}
+
+							{/* <FormItem>
 								<Button className={'btn'} onClick={this.deleteUsers}>
 									删除用户
 								</Button>
-							</FormItem>
+							</FormItem> */}
 						</Col>
 					</Row>
 				</Form>
@@ -265,7 +277,9 @@ class TableSearch extends Component {
 				<Modal title="添加用户" visible={this.state.modalVisible} onOk={this.handleAddVisible} onCancel={this.handleAddVisible} footer={null}>
 					<AddForm visible={this.state.modalVisible} wrappedComponentRef={form => (this.formRef = form)} handleSubmit={this.handleAddSubmit} />
 				</Modal>
-				<Table bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id} rowSelection={rowSelection} />
+				<Table scroll={{ x: 1200 }} bordered columns={this.state.columns} dataSource={this.state.data} loading={this.state.loading} pagination={paginationProps} rowKey={record => record.id}
+					// rowSelection={rowSelection}
+				/>
 			</div>
 		);
 	}

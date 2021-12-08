@@ -18,20 +18,23 @@ class Login extends Component {
 			if (!err) {
 				localStorage.setItem('isLogin', '1');
 				// 模拟生成一些数据
+				
 				$axios.post('/api/sysUser/login', values).then(res => {
-					if (res.data) {
+					if (res.data.token) {
 						$axios.defaults.headers.common["Authorization"] = `Bearer  ${res.data.token}`;
 						localStorage.setItem('Authorization', `Bearer  ${res.data.token}`);
 						const { userInfo } = res.data;
-						localStorage.setItem('userInfo', JSON.stringify(userInfo));
+						localStorage.setItem('userInfo', userInfo ? JSON.stringify(userInfo): '');
 
 						this.props.setUserInfo(userInfo);
-						this.props.history.push('/');
+						this.props.history.push('/system-data/search');
 
 					} else {
-						message.info(res.message)
+						message.info('登录失败，请确认账号密码')
 					}
-				});
+				}).cahth((err) => {
+					message.info('登录失败，请确认账号密码')
+				})
 			} else {
 				console.log(err);
 			}
@@ -83,7 +86,7 @@ class Login extends Component {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
 	setUserInfo: data => {
-		dispatch(setUserInfo(data));
+		// dispatch(setUserInfo(data));
 	}
 });
 export default connect(

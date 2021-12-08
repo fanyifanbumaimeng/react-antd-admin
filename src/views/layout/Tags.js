@@ -71,7 +71,8 @@ class Tags extends Component {
 
 	componentDidUpdate(newProps) {
 		let tagList = document.querySelector('.tags-list');
-		let arrLi = tagList.querySelectorAll('li');
+		let arrLi = tagList ? tagList.querySelectorAll('li') : []
+		debugger
 		let w = 0; // 根据tags计算宽度
 		for (var i = 0; i < arrLi.length; i++) {
 			w += arrLi[i].offsetWidth + 4;
@@ -106,13 +107,13 @@ class Tags extends Component {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
 	addTag: data => {
-		dispatch(addTag(data));
+		// dispatch(addTag(data));
 	},
 	removeTag: data => {
-		dispatch(removeTag(data));
+		// dispatch(removeTag(data));
 	},
 	emptyTag: () => {
-		dispatch(emptyTag());
+		// dispatch(emptyTag());
 	}
 });
 export default connect(
